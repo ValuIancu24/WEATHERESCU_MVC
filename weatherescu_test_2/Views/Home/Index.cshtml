@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Weatherescu";
+}
+
+<header>
+    <h1>Weatherescu</h1>
+</header>
+
+<nav class="nav-container">
+    <button class="nav-button" data-target="home">Home</button>
+    <button class="nav-button" data-target="contact">Contact</button>
+    <button class="nav-button" data-target="humidity">Humidity</button>
+    <button class="nav-button" data-target="precipitation">Precipitation</button>
+    <button class="nav-button" data-target="favorites">Favorites</button>
+    <button class="nav-button" data-target="about">About Us</button>
+</nav>
+
+<div class="main-container" id="home">
+    <div class="weather-container">
+        <input type="text" placeholder="Enter city name" class="search-bar">
+        <div class="weather-details">
+            <h2 class="city-name"></h2>
+            <p class="temperature"></p>
+            <img src="" alt="Weather Icon" class="icon">
+            <p class="weather-description"></p>
+            <button class="add-favorite">Add to Favorites</button>
+        </div>
+        <div class="hourly-forecast">
+            <!-- Hourly forecast will be appended here -->
+        </div>
+    </div>
+</div>
+
+<div class="contact-container" id="contact">
+    <h2>Contact Us</h2>
+    <textarea class="message-box" placeholder="Type your message here..."></textarea>
+    <button class="send-button">Send</button>
+    <div class="notification">Message sent</div>
+</div>
+
+<div class="humidity-container" id="humidity">
+    <h2>Humidity</h2>
+    <p>This page will show Humidity</p>
+</div>
+
+<div class="precipitation-container" id="precipitation">
+    <h2>Precipitation</h2>
+    <p>This page will show Precipitation</p>
+</div>
+
+<<div class="favorites-container" id="favorites">
+        <h2>Favorites</h2>
+    </>
+    <ul class="favorites-list">
+        <!-- Favorite cities will be listed here -->
+    </ul>
+</div>
+
+<div class="about-container" id="about">
+    <h2>About Us</h2>
+    <p>
+        Weatherescu is my first Web application and it is a simple Weather App which lets the user
+        search for a city in this world and see its forecast. Hope you enjoy!!!
+    </p>
+</div>

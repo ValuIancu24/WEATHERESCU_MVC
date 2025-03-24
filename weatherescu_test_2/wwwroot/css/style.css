@@ -1,0 +1,301 @@
+﻿body {
+    background-color: rgb(0, 69, 172);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align items to the top */
+    align-items: center;
+    height: 100vh;
+    overflow: hidden; /* Prevent body from scrolling */
+}
+
+header {
+    background-color: rgb(0, 69, 172);
+    color: white;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0px;
+    z-index: 1; /* Ensure header is above other elements */
+    position: relative; /* Ensure header is positioned relative to the viewport */
+}
+
+    header h1 {
+        background-color: #f006c9;
+        padding: 10px 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin: 0;
+        font-size: 100px; /* Adjust this value to make the title bigger */
+        position: relative;
+        top: 0; /* Adjust this value to move the text down */
+    }
+
+.nav-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: -10px; /* Add margin-bottom to separate from main content */
+}
+
+.nav-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    overflow-y: auto; /* Enable vertical scrolling */
+    height: calc(100vh - 100px); /* Adjust height to fit within viewport */
+}
+
+.weather-container {
+    background-color: rgb(255, 255, 255); /* Initial background color */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center elements vertically */
+    align-items: center;
+    min-height: 100px; /* Set a minimum height for the container */
+    transition: height 0.3s ease, background-color 0.3s ease; /* Smooth transition for height and background color change */
+    margin: 0 20px; /* Add space between the weather container and the favorites */
+ 
+}
+
+    .weather-container.expanded {
+        height: auto; /* Allow the container to expand based on content */
+        background-color: #00ff15; /* New background color after search */
+    }
+
+    .weather-container .search-bar {
+        width: 75%; /* Adjust the width to fit within the container */
+        max-width: 280px; /* Set a maximum width for the search bar */
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center; /* Center the text inside the search bar */
+    }
+
+    .weather-container h2 {
+        margin: 0;
+        font-size: 24px;
+        color: #333;
+    }
+
+.weather-details {
+    margin-top: 20px;
+    display: none;
+}
+
+    .weather-details p {
+        margin: 5px 0;
+        font-size: 18px;
+        color: #555;
+    }
+
+.temperature {
+    font-size: 48px;
+    color: #ff4500;
+}
+
+.icon {
+    width: 100px;
+    height: 100px;
+}
+
+.hourly-forecast {
+    display: flex;
+    flex-direction: row; /* Change to row for horizontal layout */
+    align-items: center;
+    margin-top: 20px;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    width: 100%; /* Ensure it takes full width */
+}
+
+.forecast-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 10px; /* Add space between items */
+    min-width: 100px; /* Ensure each item has a minimum width */
+}
+
+    .forecast-item p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .forecast-item img {
+        width: 50px;
+        height: 50px;
+    }
+
+.favorites-container {
+    background-color: rgb(255, 255, 255); /* Box background color */
+    border: 1px solid #ccc; /* Box border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Padding inside the box */
+    width: 300px;
+    text-align: center;
+    max-height: 400px; /* Set a maximum height for the favorites list */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-left: 20px; /* Add space between the weather container and the favorites */
+    order: 2; /* Ensure the favorites container is on the right */
+    z-index: 1; /* Ensure favorites container is above other elements */
+    position: relative; /* Ensure the container is positioned relative to its parent */
+}
+
+.favorites-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .favorites-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #ffffff;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 2px solid blue; /* Add border to each favorite item */
+    }
+
+    .favorites-list button {
+        background-color: #ff4500;
+        color: rgb(255, 255, 255);
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+
+.contact-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.message-box {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.send-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.notification {
+    display: none;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.nav-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#contact {
+    display: none;
+}
+
+.humidity-container, .precipitation-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#favorites {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
