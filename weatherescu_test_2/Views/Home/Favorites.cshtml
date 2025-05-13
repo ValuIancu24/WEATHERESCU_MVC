@@ -1,0 +1,107 @@
+﻿@{
+    ViewData["Title"] = "Favorites";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center text-white mb-4">My Favorite Cities</h2>
+
+    <div id="no-favorites-message" class="alert alert-info text-center" style="display: none;">
+        You haven't added any cities to your favorites yet. Search for a city and click "Add to Favorites" to see them here.
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="weather-favorites-list">
+                <!-- Favorites will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Load and display favorites
+                loadFavorites();
+
+                function loadFavorites() {
+                    // Get favorites from localStorage - CHANGED KEY HERE
+                    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                    const favoritesList = document.querySelector('.weather-favorites-list');
+                    const noFavoritesMessage = document.getElementById('no-favorites-message');
+
+                    // Show message if no favorites
+                    if (favorites.length === 0) {
+                        noFavoritesMessage.style.display = 'block';
+                        favoritesList.innerHTML = '';
+                        return;
+                    }
+
+                    // Hide message if we have favorites
+                    noFavoritesMessage.style.display = 'none';
+
+                    // Clear existing list
+                    favoritesList.innerHTML = '';
+
+                    // Create a row for the cards
+                    const row = document.createElement('div');
+                    row.className = 'row';
+
+                    // Add each favorite as a card
+                    favorites.forEach(function(city) {
+                        const col = document.createElement('div');
+                        col.className = 'col-md-4 mb-4';
+
+                        const card = document.createElement('div');
+                        card.className = 'card favorite-city-card';
+
+                        const cardBody = document.createElement('div');
+                        cardBody.className = 'card-body';
+
+                        const title = document.createElement('h5');
+                        title.className = 'card-title';
+                        title.textContent = city;
+
+                        const viewButton = document.createElement('a');
+                        viewButton.className = 'btn btn-primary me-2';
+                        viewButton.textContent = 'View Weather';
+                        viewButton.href = '/Home/Index?city=' + encodeURIComponent(city);
+
+                        const removeButton = document.createElement('button');
+                        removeButton.className = 'btn btn-danger';
+                        removeButton.textContent = 'Remove';
+                        removeButton.onclick = function() {
+                            removeFromFavorites(city);
+                        };
+
+                        const buttonGroup = document.createElement('div');
+                        buttonGroup.className = 'd-flex mt-3';
+                        buttonGroup.appendChild(viewButton);
+                        buttonGroup.appendChild(removeButton);
+
+                        cardBody.appendChild(title);
+                        cardBody.appendChild(buttonGroup);
+                        card.appendChild(cardBody);
+                        col.appendChild(card);
+                        row.appendChild(col);
+                    });
+
+                    favoritesList.appendChild(row);
+                }
+
+                // Remove a city from favorites
+                function removeFromFavorites(city) {
+                    // CHANGED KEY HERE
+                    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                    favorites = favorites.filter(function(fav) {
+                        return fav !== city;
+                    });
+                    // CHANGED KEY HERE
+                    localStorage.setItem('favorites', JSON.stringify(favorites));
+
+                    // Reload the favorites list
+                    loadFavorites();
+                }
+            });
+        </script>
+}

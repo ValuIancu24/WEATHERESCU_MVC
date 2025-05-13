@@ -10,7 +10,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const temperature = document.querySelector('.temperature');
     const weatherIcon = document.querySelector('.icon');
     const weatherDescription = document.querySelector('.weather-description');
+    const addFavoriteButton = document.querySelector('.add-favorite');
     const hourlyForecastContainer = document.querySelector('.hourly-forecast');
+
+    // Load stored favorites
+    let favorites = JSON.parse(localStorage.getItem('weatherFavorites')) || [];
 
     // Initialize search functionality
     if (searchBar && searchButton) {
@@ -30,6 +34,31 @@ document.addEventListener('DOMContentLoaded', function () {
                     getHourlyForecast(city);
                 }
             }
+        });
+    }
+
+    // Initialize favorites button
+    if (addFavoriteButton) {
+        addFavoriteButton.addEventListener('click', function () {
+            const city = cityName.textContent;
+
+            if (favorites.includes(city)) {
+                // Remove from favorites
+                favorites = favorites.filter(fav => fav !== city);
+                addFavoriteButton.textContent = 'Add to Favorites';
+                addFavoriteButton.classList.remove('btn-danger');
+                addFavoriteButton.classList.add('btn-primary');
+            } else {
+                // Add to favorites
+                if (city && favorites.length < 10) {
+                    favorites.push(city);
+                    addFavoriteButton.textContent = 'Remove from Favorites';
+                    addFavoriteButton.classList.remove('btn-primary');
+                    addFavoriteButton.classList.add('btn-danger');
+                }
+            }
+
+            localStorage.setItem('weatherFavorites', JSON.stringify(favorites));
         });
     }
 
@@ -67,8 +96,21 @@ document.addEventListener('DOMContentLoaded', function () {
         weatherDescription.textContent = data.weather[0].description;
         weatherDetails.style.display = 'block';
 
-        if (weatherContainer) {
-            weatherContainer.classList.add('expanded');
+        if (document.querySelector('.weather-container')) {
+            document.querySelector('.weather-container').classList.add('expanded');
+        }
+
+        // Update favorite button state
+        if (addFavoriteButton) {
+            if (favorites.includes(data.name)) {
+                addFavoriteButton.textContent = 'Remove from Favorites';
+                addFavoriteButton.classList.remove('btn-primary');
+                addFavoriteButton.classList.add('btn-danger');
+            } else {
+                addFavoriteButton.textContent = 'Add to Favorites';
+                addFavoriteButton.classList.remove('btn-danger');
+                addFavoriteButton.classList.add('btn-primary');
+            }
         }
     }
 
