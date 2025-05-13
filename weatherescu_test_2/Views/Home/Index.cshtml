@@ -4,16 +4,21 @@
 
 <div class="main-container" id="home">
     <div class="weather-container">
-        <input type="text" placeholder="Enter city name" class="search-bar">
-        <div class="weather-details">
+        <div class="search-container">
+            <input type="text" placeholder="Enter city name" class="search-bar form-control">
+            <button class="btn btn-primary search-button">Search</button>
+        </div>
+
+        <div class="weather-details" style="display: none;">
             <h2 class="city-name"></h2>
             <p class="temperature"></p>
             <img src="" alt="Weather Icon" class="icon">
             <p class="weather-description"></p>
-            <button class="add-favorite">Add to Favorites</button>
+            <!-- Favorites button removed -->
         </div>
+
         <div class="hourly-forecast">
-            <!-- Hourly forecast will be appended here -->
+            <!-- Hourly forecast will be added here -->
         </div>
     </div>
 </div>
