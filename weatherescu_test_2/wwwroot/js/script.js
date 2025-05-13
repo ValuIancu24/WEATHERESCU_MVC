@@ -21,6 +21,7 @@ const precipitationSection = document.getElementById('precipitation');
 const favoritesSection = document.getElementById('favorites');
 const aboutSection = document.getElementById('about');
 
+// Navigation logic
 navButtons.forEach(button => {
     button.addEventListener('click', () => {
         const target = button.getAttribute('data-target');
@@ -30,22 +31,20 @@ navButtons.forEach(button => {
         precipitationSection.style.display = 'none';
         favoritesSection.style.display = 'none';
         aboutSection.style.display = 'none';
-        if (target === 'home') {
-            homeSection.style.display = 'flex';
-        } else if (target === 'contact') {
-            contactSection.style.display = 'flex';
-        } else if (target === 'humidity') {
-            humiditySection.style.display = 'flex';
-        } else if (target === 'precipitation') {
-            precipitationSection.style.display = 'flex';
-        } else if (target === 'favorites') {
+
+        if (target === 'home') homeSection.style.display = 'flex';
+        else if (target === 'contact') contactSection.style.display = 'flex';
+        else if (target === 'humidity') humiditySection.style.display = 'flex';
+        else if (target === 'precipitation') precipitationSection.style.display = 'flex';
+        else if (target === 'favorites') {
             favoritesSection.style.display = 'flex';
-        } else if (target === 'about') {
-            aboutSection.style.display = 'flex';
+            renderFavorites(); // Ensure it refreshes list
         }
+        else if (target === 'about') aboutSection.style.display = 'flex';
     });
 });
 
+// Load stored favorites
 let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 
 searchBar.addEventListener('keypress', (event) => {
@@ -56,13 +55,14 @@ searchBar.addEventListener('keypress', (event) => {
     }
 });
 
+// Add to favorites logic
 addFavoriteButton.addEventListener('click', () => {
     const city = cityName.textContent;
     if (favorites.includes(city)) {
         favorites = favorites.filter(fav => fav !== city);
         addFavoriteButton.textContent = 'Add to Favorites';
     } else {
-        if (city && favorites.length < 10) { // Limit to 10 favorites
+        if (city && favorites.length < 10) {
             favorites.push(city);
             addFavoriteButton.textContent = 'Remove from Favorites';
         }
@@ -71,6 +71,7 @@ addFavoriteButton.addEventListener('click', () => {
     renderFavorites();
 });
 
+// Simple message sending
 sendButton.addEventListener('click', () => {
     const message = messageBox.value;
     if (message.trim() !== '') {
@@ -86,14 +87,25 @@ sendButton.addEventListener('click', () => {
     }
 });
 
+// Render the favorites in UI
 function renderFavorites() {
     favoritesList.innerHTML = '';
     favorites.forEach(city => {
         const li = document.createElement('li');
-        li.textContent = city;
+
+        const citySpan = document.createElement('span');
+        citySpan.textContent = city;
+        citySpan.style.cursor = 'pointer';
+        citySpan.style.flex = '1';
+        citySpan.style.paddingRight = '10px';
+        citySpan.addEventListener('click', () => {
+            displayForecastInFavorites(city); // ✅ Updated behavior
+        });
+
         const removeButton = document.createElement('button');
         removeButton.textContent = 'Remove';
-        removeButton.addEventListener('click', () => {
+        removeButton.addEventListener('click', (event) => {
+            event.stopPropagation();
             favorites = favorites.filter(fav => fav !== city);
             localStorage.setItem('favorites', JSON.stringify(favorites));
             renderFavorites();
@@ -101,17 +113,16 @@ function renderFavorites() {
                 addFavoriteButton.textContent = 'Add to Favorites';
             }
         });
+
+        li.style.display = 'flex';
+        li.style.justifyContent = 'space-between';
+        li.appendChild(citySpan);
         li.appendChild(removeButton);
-        li.addEventListener('click', () => {
-            getWeatherData(city);
-            getHourlyForecast(city);
-            homeSection.style.display = 'flex';
-            favoritesSection.style.display = 'none';
-        });
         favoritesList.appendChild(li);
     });
 }
 
+// Fetch weather data
 async function getWeatherData(city) {
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
     try {
@@ -123,6 +134,7 @@ async function getWeatherData(city) {
     }
 }
 
+// Fetch forecast data
 async function getHourlyForecast(city) {
     const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
     try {
@@ -140,20 +152,17 @@ function updateWeatherDetails(data) {
     weatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
     weatherDescription.textContent = data.weather[0].description;
     weatherDetails.style.display = 'block';
-    weatherContainer.classList.add('expanded'); // Add the expanded class
+    weatherContainer.classList.add('expanded');
 
-    // Update the button text based on whether the city is in favorites
-    if (favorites.includes(data.name)) {
-        addFavoriteButton.textContent = 'Remove from Favorites';
-    } else {
-        addFavoriteButton.textContent = 'Add to Favorites';
-    }
+    addFavoriteButton.textContent = favorites.includes(data.name)
+        ? 'Remove from Favorites'
+        : 'Add to Favorites';
 }
 
 function updateHourlyForecast(data) {
-    hourlyForecastContainer.innerHTML = ''; // Clear previous forecast
-    const timezoneOffset = data.city.timezone; // Get the timezone offset in seconds
-    const forecastList = data.list.slice(0, 9); // Get the first 9 entries (3-hour intervals up to 24 hours)
+    hourlyForecastContainer.innerHTML = '';
+    const timezoneOffset = data.city.timezone;
+    const forecastList = data.list.slice(0, 9);
     forecastList.forEach(forecast => {
         const forecastElement = document.createElement('div');
         forecastElement.classList.add('forecast-item');
@@ -172,5 +181,33 @@ function updateHourlyForecast(data) {
     });
 }
 
-// Initial render of favorites
+// ✅ NEW FUNCTION — display weather on Favorites page
+function displayForecastInFavorites(city) {
+    const forecastContainer = document.getElementById('favorites-forecast');
+    const cityDisplay = forecastContainer.querySelector('.city-name');
+    const tempDisplay = forecastContainer.querySelector('.temperature');
+    const iconDisplay = forecastContainer.querySelector('.icon');
+    const descDisplay = forecastContainer.querySelector('.weather-description');
+    const hourlyContainer = forecastContainer.querySelector('.hourly-forecast');
+
+    forecastContainer.style.display = 'block';
+    cityDisplay.textContent = '';
+    tempDisplay.textContent = '';
+    iconDisplay.src = '';
+    descDisplay.textContent = '';
+    hourlyContainer.innerHTML = '';
+
+    getWeatherData(city).then(() => {
+        cityDisplay.textContent = cityName.textContent;
+        tempDisplay.textContent = temperature.textContent;
+        iconDisplay.src = weatherIcon.src;
+        descDisplay.textContent = weatherDescription.textContent;
+    });
+
+    getHourlyForecast(city).then(() => {
+        hourlyContainer.innerHTML = hourlyForecastContainer.innerHTML;
+    });
+}
+
+// Initial render
 renderFavorites();

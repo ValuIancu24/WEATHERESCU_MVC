@@ -1,0 +1,12 @@
+﻿@model weatherescu_test_2.Models.City
+
+<h2 class="text-center">Delete City</h2>
+
+<div class="alert alert-danger">
+    Are you sure you want to delete the city <strong>@Model.Name</strong> from the list?
+</div>
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="@Url.Action("Index", "Cities")" class="btn btn-secondary">Cancel</a>
+</form>

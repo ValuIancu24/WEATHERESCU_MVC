@@ -1,0 +1,30 @@
+﻿@model IEnumerable<weatherescu_test_2.Models.City>
+
+<h2 class="text-center">Cities</h2>
+
+<!-- Table to display cities and their attributes -->
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Temperature (°C)</th>
+            <th>Humidity (%)</th>
+            <th>Precipitation (mm)</th>
+            <th>Weather Condition</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var city in Model)
+        {
+            <tr>
+                <td>@city.Name</td>
+                <td>@city.Country</td>
+                <td>@city.Temperature?.Value</td> <!-- Display Temperature -->
+                <td>@city.Humidity?.Value</td> <!-- Display Humidity -->
+                <td>@city.Precipitation?.Value</td> <!-- Display Precipitation -->
+                <td>@city.WeatherCondition?.Description</td> <!-- Display Weather Condition -->
+            </tr>
+        }
+    </tbody>
+</table>
