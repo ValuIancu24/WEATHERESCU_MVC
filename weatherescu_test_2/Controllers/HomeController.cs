@@ -65,10 +65,7 @@ namespace weatherescu_test_2.Controllers
             return View();
         }
 
-        public IActionResult Favorites()
-        {
-            return View();
-        }
+        
 
         public async Task<IActionResult> Cities()
         {
