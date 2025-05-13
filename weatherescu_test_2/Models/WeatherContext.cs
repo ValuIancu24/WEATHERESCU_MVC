@@ -2,10 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using weatherescu_test_2.Models;
+namespace weatherescu_test_2.Models; 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace weatherescu_test_2.Models // Or your actual namespace
-{
-    public class WeatherContext : DbContext
+    public class WeatherContext : IdentityDbContext
     {
         public WeatherContext(DbContextOptions<WeatherContext> options)
             : base(options)
@@ -73,4 +73,3 @@ namespace weatherescu_test_2.Models // Or your actual namespace
                 );
         }
     }
-}
