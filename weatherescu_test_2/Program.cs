@@ -71,21 +71,21 @@ using (var scope = app.Services.CreateScope())
         authService.CreateRoleAsync("Admin").Wait();
         authService.CreateRoleAsync("User").Wait();
 
-        // Create an admin user (change email/password as needed)
+        
         string adminEmail = "admin@weatherescu.com";
         string adminPassword = "Admin123!";
 
         var adminUser = authService.FindByEmailAsync(adminEmail).Result;
         if (adminUser == null)
         {
-            // Register the admin user
+            
             var result = authService.RegisterUserAsync(adminEmail, adminPassword).Result;
             if (result.Succeeded)
             {
-                // Find the newly created user
+                
                 adminUser = authService.FindByEmailAsync(adminEmail).Result;
 
-                // Add to Admin role
+                
                 authService.AddUserToRoleAsync(adminUser.Id, "Admin").Wait();
             }
         }
